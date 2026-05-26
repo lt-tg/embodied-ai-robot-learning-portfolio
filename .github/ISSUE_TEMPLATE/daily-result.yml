@@ -1,0 +1,48 @@
+name: Daily result
+description: Public daily progress record.
+title: "Day XX: <result>"
+labels: ["daily-result"]
+body:
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      placeholder: "2026-05-28"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What did this work try to prove or build?
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands
+      description: Exact commands that were run.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result
+      description: What passed, failed, or changed?
+    validations:
+      required: true
+  - type: textarea
+    id: artifact
+    attributes:
+      label: Artifact
+      description: Link the code, note, report, figure, table, or demo.
+    validations:
+      required: true
+  - type: textarea
+    id: next
+    attributes:
+      label: Next step
+      description: What comes next?
+    validations:
+      required: true

@@ -1,0 +1,10 @@
+[
+  {
+    "text": "pick the red cube and place it on the blue plate",
+    "expected": {"action": "pick_place", "object": "red cube", "target": "blue plate"}
+  },
+  {
+    "text": "把红色方块放到蓝色盘子上",
+    "expected": {"action": "pick_place", "object": "红色方块", "target": "蓝色盘子"}
+  }
+]

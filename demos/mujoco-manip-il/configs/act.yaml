@@ -1,0 +1,15 @@
+seed: 42
+task: robosuite/Lift
+policy:
+  name: act
+  chunk_size: 20
+  hidden_dim: 512
+  nheads: 8
+  encoder_layers: 4
+training:
+  batch_size: 64
+  learning_rate: 0.0001
+  epochs: 200
+evaluation:
+  episodes: 50
+  metrics: [success_rate, latency_ms, failure_mode]
