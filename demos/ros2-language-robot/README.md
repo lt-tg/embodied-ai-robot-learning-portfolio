@@ -37,7 +37,7 @@ Launch:
 Before installing ROS2, use the tested parser in the root package:
 
 ```powershell
-cd robot-learning-lab
+cd "C:\Users\84124\Documents\New project 2\embodied-ai-robot-learning-portfolio"
 python examples/day25_parse_command.py
 ```
 

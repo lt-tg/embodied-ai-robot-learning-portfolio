@@ -1,8 +1,8 @@
 # Embodied AI Robot Learning Portfolio
 
-This repository records hands-on progress in embodied AI, robot learning, manipulation, simulation, ROS2-style interfaces, and VLA evaluation.
+This is the public portfolio repository and the single runnable source of truth for embodied-AI robot-learning code, tests, examples, and demo projects.
 
-The repository is designed as public evidence of implementation work: runnable examples, tested utilities, demo scaffolds, technical notes, result logs, and weekly reports.
+It records public evidence of implementation work in embodied AI, robot learning, manipulation, simulation, ROS2-style interfaces, and VLA evaluation: runnable examples, tested utilities, demo scaffolds, technical notes, result logs, and weekly reports.
 
 ## Focus Areas
 
@@ -24,6 +24,8 @@ src/        Tested Python utilities.
 tests/      Unit tests.
 ```
 
+Non-public planning and career-preparation material lives outside this repository.
+
 ## Quick Start
 
 ```powershell
@@ -35,11 +37,11 @@ python examples/day25_parse_command.py
 
 ## Current Public Demos
 
-| Demo | Goal | Public Evidence |
-|---|---|---|
-| `demos/mujoco-manip-il` | MuJoCo manipulation + imitation learning benchmark | configs, result template, planned metrics |
-| `demos/vla-eval-pipeline` | VLA-style evaluation pipeline | prompt set, evaluation report template |
-| `demos/ros2-language-robot` | Language command to robot task interface | parser examples and ROS2 interface sketch |
+| Demo | Status | Goal | Public Evidence |
+|---|---|---|---|
+| `demos/mujoco-manip-il` | scaffold | MuJoCo manipulation + imitation learning benchmark | configs, result template, planned metrics |
+| `demos/vla-eval-pipeline` | scaffold | VLA-style evaluation pipeline | prompt set, evaluation report template |
+| `demos/ros2-language-robot` | scaffold | Language command to robot task interface | parser examples and ROS2 interface sketch |
 
 ## Progress Log
 

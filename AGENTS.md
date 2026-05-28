@@ -2,6 +2,8 @@
 
 This is the public portfolio repository for embodied-AI and robot-learning evidence.
 
+This repository is the single source of truth for mature runnable code, tests, examples, and public demo projects. Keep reusable implementation work here instead of maintaining duplicate runnable code in the private learning workspace.
+
 Only publish public evidence:
 
 - code
