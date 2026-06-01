@@ -1,6 +1,6 @@
 # Week 01 Report - Foundations
 
-Date range: 2026-05-28 to 2026-06-03
+Date range: 2026-06-01 to 2026-06-07
 
 ## Goal
 
