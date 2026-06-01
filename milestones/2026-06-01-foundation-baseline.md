@@ -1,10 +1,10 @@
-# Day 01 - Environment and Baseline Verification
+# Foundation Baseline Verification
 
 Date: 2026-06-01
 
-## Goal
+## Purpose
 
-Verify the public portfolio repository and establish the daily evidence workflow.
+Establish a reproducible baseline for the public portfolio: unit tests, robotics math examples, command parsing, and CUDA visibility.
 
 ## Commands
 
@@ -37,16 +37,13 @@ python -c "import torch; print(torch.__version__); print('cuda_available:', torc
   - `cuda_available: True`
   - `cuda_device: NVIDIA GeForce GTX 1660 Ti`
 
-## Artifact
+## Evidence
 
-- Public portfolio repository initialized.
-- Daily progress note format established.
-- Environment baseline recorded with tests, examples, and CUDA visibility.
+- Tested utility package under `src/`.
+- Reproducible examples under `examples/`.
+- Demo scaffolds under `demos/`.
+- Environment baseline with local CUDA visibility.
 
-## Blocker or Lesson
+## Follow-Up
 
-- Environment baseline verified. Existing tests and examples run locally, and PyTorch can see the CUDA device.
-
-## Next Step
-
-- Build the PyTorch behavior cloning training skeleton.
+Build the first behavior-cloning training skeleton for the manipulation demo.

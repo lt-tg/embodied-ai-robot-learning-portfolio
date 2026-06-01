@@ -1,32 +1,18 @@
 # Embodied AI Robot Learning Portfolio
 
-This is the public portfolio repository and the single runnable source of truth for embodied-AI robot-learning code, tests, examples, and demo projects.
+Public demo portfolio for embodied-AI and robot-learning systems: manipulation benchmarks, VLA evaluation utilities, ROS2-style language interfaces, and tested robotics foundations.
 
-It records public evidence of implementation work in embodied AI, robot learning, manipulation, simulation, ROS2-style interfaces, and VLA evaluation: runnable examples, tested utilities, demo scaffolds, technical notes, result logs, and weekly reports.
+This repository is the single runnable source of truth for public code, examples, demos, result reports, and technical writeups.
 
-## Focus Areas
+## Demo Showcase
 
-- Robot math: SE(3), quaternions, forward/inverse kinematics, Jacobians.
-- Simulation: MuJoCo/robosuite manipulation tasks.
-- Robot learning: behavior cloning, ACT, Diffusion Policy, evaluation metrics.
-- VLA evaluation: image-language-action model inputs, action decoding, prompt robustness.
-- System integration: ROS2-style command parsing and policy bridge design.
+| Demo | Status | What It Shows | Evidence |
+|---|---|---|---|
+| `demos/mujoco-manip-il` | scaffold | Manipulation benchmark with imitation-learning configs for BC, ACT, and Diffusion Policy | Configs, result template, planned metrics |
+| `demos/vla-eval-pipeline` | scaffold | VLA-style prompt and action-output evaluation pipeline | Prompt set, evaluation report template |
+| `demos/ros2-language-robot` | scaffold | Language command parsing and ROS2-style task interface | Parser examples, launch sketch, policy bridge design |
 
-## Repository Structure
-
-```text
-daily/      Daily public progress notes.
-demos/      Portfolio demo projects.
-examples/   Runnable learning exercises.
-notes/      Technical notes and paper reading notes.
-reports/    Weekly summaries and result reports.
-src/        Tested Python utilities.
-tests/      Unit tests.
-```
-
-Non-public planning and career-preparation material lives outside this repository.
-
-## Quick Start
+## Quick Verification
 
 ```powershell
 python -m unittest discover -s tests
@@ -35,31 +21,33 @@ python examples/day04_planar_arm.py
 python examples/day25_parse_command.py
 ```
 
-## Current Public Demos
+## Technical Components
 
-| Demo | Status | Goal | Public Evidence |
-|---|---|---|---|
-| `demos/mujoco-manip-il` | scaffold | MuJoCo manipulation + imitation learning benchmark | configs, result template, planned metrics |
-| `demos/vla-eval-pipeline` | scaffold | VLA-style evaluation pipeline | prompt set, evaluation report template |
-| `demos/ros2-language-robot` | scaffold | Language command to robot task interface | parser examples and ROS2 interface sketch |
+- Robot math utilities: transforms, rotations, quaternions, and coordinate-frame checks.
+- Kinematics utilities: 2D planar-arm forward kinematics, inverse kinematics, and Jacobian calculation.
+- Evaluation utilities: success rate, action MSE, and simple parser metrics.
+- Language interface utilities: natural-language command parsing for robot task sketches.
 
-## Progress Log
+## Results And Reports
 
-Daily public notes live in `daily/`. Each entry records:
+- `reports/`: result-oriented technical reports and demo summaries.
+- `milestones/`: public milestone records for completed portfolio evidence.
+- `notes/`: technical design notes that support demos and reproducible explanations.
 
-- goal
-- commands
-- result
-- artifact
-- blocker or lesson
-- next step
+## Repository Structure
 
-## Verification
-
-Current lightweight verification:
-
-```powershell
-python -m unittest discover -s tests
+```text
+demos/       Public demo projects.
+src/         Reusable tested robotics utilities.
+tests/       Unit tests for reusable components.
+examples/    Minimal reproducible examples.
+reports/     Result reports and technical writeups.
+notes/       Technical design notes.
+milestones/  Portfolio evidence checkpoints.
 ```
 
-The heavy robotics dependencies are intentionally added only when the corresponding demo needs them.
+Non-public planning and career-preparation material lives outside this repository.
+
+## Dependency Policy
+
+The root package stays lightweight. Heavy robotics dependencies such as MuJoCo, robosuite, LeRobot, ROS2, or Isaac Lab should be added only inside the corresponding demo when they are needed for a runnable result.

@@ -1,0 +1,48 @@
+name: Milestone result
+description: Public portfolio evidence checkpoint.
+title: "<milestone>: <result>"
+labels: ["milestone-result"]
+body:
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      placeholder: "2026-06-01"
+    validations:
+      required: true
+  - type: textarea
+    id: capability
+    attributes:
+      label: Capability
+      description: What capability does this milestone demonstrate?
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Reproducible commands
+      description: Exact commands that verify the result.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result
+      description: What passed, what was measured, or what artifact was produced?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Link the code, report, figure, table, video, or demo.
+    validations:
+      required: true
+  - type: textarea
+    id: follow_up
+    attributes:
+      label: Follow-up
+      description: What portfolio-facing improvement comes next?
+    validations:
+      required: true

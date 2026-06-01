@@ -10,9 +10,9 @@ Only publish public evidence:
 - tests
 - examples
 - demos
-- daily progress notes
+- portfolio milestone records
 - technical notes
-- weekly reports
+- result reports
 - reproducible commands
 - result tables, screenshots, or videos
 
@@ -48,4 +48,4 @@ rg -i "password|access token|github token|api key|credential|secret|841241285|nu
 C:\Users\84124\Documents\New project 2\robot-learning-lab
 ```
 
-Daily public evidence should be concise, reproducible, and portfolio-facing.
+Public evidence should be concise, reproducible, and portfolio-facing.

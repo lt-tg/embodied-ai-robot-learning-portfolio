@@ -1,4 +1,4 @@
-"""Starter utilities for the embodied-AI internship learning lab."""
+"""Reusable robotics utilities for the public embodied-AI portfolio."""
 
 __all__ = [
     "metrics",
