@@ -5,4 +5,5 @@ __all__ = [
     "planar_arm",
     "robot_math",
     "task_parser",
+    "training_skeleton",
 ]

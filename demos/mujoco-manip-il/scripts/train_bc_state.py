@@ -1,101 +1,41 @@
+"""Minimal BC training script on synthetic imitation data.
+
+Usage::
+
+    python demos/mujoco-manip-il/scripts/train_bc_state.py \\
+        --seed 42 --obs-dim 8 --action-dim 4 --num-samples 512 \\
+        --batch-size 64 --epochs 5 --lr 0.001 --output-dir outputs/day02_bc_smoke
+
+All reusable components live in ``robot_learning_lab.training_skeleton``.
+"""
+
 import argparse
+import json
 import os
-import random
+import sys
 
-import numpy as np
+# -- path setup: allow the script to find src/ from the repo root -----------
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.abspath(os.path.join(_HERE, "..", "..", ".."))
+sys.path.insert(0, os.path.join(_REPO_ROOT, "src"))
+
 import torch
-from torch import nn
-from torch.utils.data import Dataset, DataLoader, random_split
+from torch.utils.data import DataLoader, random_split
 
-
-def set_seed(seed: int):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-
-
-class SyntheticImitationDataset(Dataset):
-    def __init__(self, obs_dim, action_dim, num_samples, seed=0):
-        self.obs_dim = obs_dim
-        self.action_dim = action_dim
-        self.num_samples = num_samples
-        rng = np.random.RandomState(seed)
-        self.W = rng.randn(obs_dim, action_dim).astype(np.float32)
-        self.b = rng.randn(action_dim).astype(np.float32)
-        self.observations = rng.randn(num_samples, obs_dim).astype(np.float32)
-        noise = 0.01 * rng.randn(num_samples, action_dim).astype(np.float32)
-        self.actions = np.tanh(self.observations @ self.W + self.b) + noise
-
-    def __len__(self):
-        return self.num_samples
-
-    def __getitem__(self, index):
-        obs = torch.from_numpy(self.observations[index])
-        act = torch.from_numpy(self.actions[index])
-        return obs, act
-
-
-class MLPPolicy(nn.Module):
-    def __init__(self, obs_dim, action_dim, hidden_dim=128):
-        super().__init__()
-        self.network = nn.Sequential(
-            nn.Linear(obs_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, action_dim),
-            nn.Tanh(),
-        )
-
-    def forward(self, obs):
-        return self.network(obs)
-
-
-def train_one_epoch(model, dataloader, optimizer, device):
-    model.train()
-    total_loss = 0.0
-    criterion = nn.MSELoss()
-    for obs, act in dataloader:
-        obs = obs.to(device)
-        act = act.to(device)
-        pred = model(obs)
-        loss = criterion(pred, act)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        total_loss += loss.item() * obs.size(0)
-    return total_loss / len(dataloader.dataset)
-
-
-def evaluate(model, dataloader, device):
-    model.eval()
-    total_loss = 0.0
-    criterion = nn.MSELoss()
-    with torch.no_grad():
-        for obs, act in dataloader:
-            obs = obs.to(device)
-            act = act.to(device)
-            pred = model(obs)
-            loss = criterion(pred, act)
-            total_loss += loss.item() * obs.size(0)
-    return total_loss / len(dataloader.dataset)
-
-
-def save_checkpoint(model, optimizer, output_dir, epoch):
-    os.makedirs(output_dir, exist_ok=True)
-    checkpoint = {
-        "model_state_dict": model.state_dict(),
-        "optimizer_state_dict": optimizer.state_dict(),
-        "epoch": epoch,
-    }
-    path = os.path.join(output_dir, f"checkpoint_epoch_{epoch}.pt")
-    torch.save(checkpoint, path)
-    return path
+from robot_learning_lab.training_skeleton import (
+    MLPPolicy,
+    SyntheticImitationDataset,
+    evaluate,
+    save_checkpoint,
+    set_seed,
+    train_one_epoch,
+)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Train a state-based BC policy on synthetic data."
+    )
     parser.add_argument("--obs-dim", type=int, default=10)
     parser.add_argument("--action-dim", type=int, default=4)
     parser.add_argument("--num-samples", type=int, default=1000)
@@ -111,6 +51,8 @@ def main():
     args = parse_args()
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # ---- dataset -----------------------------------------------------------
     dataset = SyntheticImitationDataset(
         obs_dim=args.obs_dim,
         action_dim=args.action_dim,
@@ -122,13 +64,30 @@ def main():
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False)
+
+    # ---- model & optimizer -------------------------------------------------
     model = MLPPolicy(args.obs_dim, args.action_dim).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+
+    # ---- training loop -----------------------------------------------------
+    metrics = []
     for epoch in range(1, args.epochs + 1):
         train_loss = train_one_epoch(model, train_loader, optimizer, device)
         val_loss = evaluate(model, val_loader, device)
-        print(f"Epoch {epoch}/{args.epochs} train_loss={train_loss:.6f} val_loss={val_loss:.6f}")
+        print(
+            f"Epoch {epoch}/{args.epochs} "
+            f"train_loss={train_loss:.6f} val_loss={val_loss:.6f}"
+        )
+        metrics.append({"epoch": epoch, "train_mse": train_loss, "val_mse": val_loss})
         save_checkpoint(model, optimizer, args.output_dir, epoch)
+
+    # ---- save metrics ------------------------------------------------------
+    os.makedirs(args.output_dir, exist_ok=True)
+    metrics_path = os.path.join(args.output_dir, "metrics.json")
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=2)
+    print(f"Saved metrics: {metrics_path}")
+
     print("Training complete. Checkpoints saved to", args.output_dir)
 
 
